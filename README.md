@@ -26,9 +26,9 @@ Make sure to run a `dev/build` after installing the module.
 1. Create your profile page like you normally would.
 2. Under the *Profile > Fields* tab, edit the Email profile field. At the bottom of the page, under the _Vlaidation_ header, there should now be a _Domain Validation_ subsection.
 3. In the apropriate textarea field, provide a list of allowed and/or disallowed domains.
-⋅⋅* If you leave a field blank, it will be ignored.
-⋅⋅* If you leave both fields blank, there's not going to be any domain validation on the email.
-⋅⋅* You can use wildcards to whitelist or blacklist subdomains. (e.g.: `*.example.com`)
+  * If you leave a field blank, it will be ignored.
+  * If you leave both fields blank, there's not going to be any domain validation on the email.
+  * You can use wildcards to whitelist or blacklist subdomains. (e.g.: `*.example.com`)
 4. If you want the error message to include the list of allowed or disallowed domains, check _Show Domains On Error_.
 5. Save your email profile field.
 
