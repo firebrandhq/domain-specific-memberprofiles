@@ -1,11 +1,33 @@
 <?php
 
+/**
+ * Extension to {@link EmailField} that adds the ability to limit which domains are allowed for the email address.
+ *
+ * Wildcards are supported.
+ *
+ * @copyright Firebrand Holdings Limited 2016
+ * @author Maxime Rainville <max@firebrand.nz>
+ * @license https://raw.githubusercontent.com/firebrandhq/domain-specific-memberprofiles/master/LICENSE MIT License
+ */
 class DomainSpecificEmailField extends EmailField
 {
 
+    /**
+     * List of allowed domains. Wild cards are accepted.
+     * @var [string]
+     */
     protected $allowedDomains = [];
+
+    /**
+     * List of disallowed domains. Wild cards are accepted.
+     * @var [string]
+     */
     protected $disallowed = [];
 
+    /**
+     * Whatever to include the list of allowed or disallowed domains in the validation error message.
+     * @var bool
+     */
     protected $showListOnError = false;
 
     /**
@@ -24,6 +46,11 @@ class DomainSpecificEmailField extends EmailField
         );
     }
 
+    /**
+     * Set which domains are allowed. If not define, this condition will be ignored.
+     * @param [string]|string $value A list of allowed domains. If a string is provided, it will be splitted by line.
+     * @return DomainSpecificEmailField
+     */
     public function setAllowedDomains($value)
     {
         if (!is_array($value)) {
@@ -33,11 +60,20 @@ class DomainSpecificEmailField extends EmailField
         return $this;
     }
 
+    /**
+     * Return the list of Allowed Domains
+     * @return [string]
+     */
     public function getAllowedDomains()
     {
         return $this->allowedDomains;
     }
 
+    /**
+     * Set which domains are disallowed. If not define, this condition will be ignored.
+     * @param [string]|string $value A list of allowed domains. If a string is provided, it will be splitted by line.
+     * @return DomainSpecificEmailField
+     */
     public function setDisallowedDomains($value)
     {
         if (!is_array($value)) {
@@ -47,17 +83,30 @@ class DomainSpecificEmailField extends EmailField
         return $this;
     }
 
+    /**
+     * Return the list of Disallowed Domains
+     * @return [string]
+     */
     public function getDisallowedDomains()
     {
         return $this->disallowedDomains;
     }
 
+    /**
+     * Set whatever to show the domains restriction to the user if the validation fails.
+     * @param bool $value
+     * @return DomainSpecificEmailField
+     */
     public function setShowListOnError($value)
     {
         $this->showListOnError = (bool)$value;
         return $this;
     }
 
+    /**
+     * Whatever to show the domains restriction to the user if the validation fails.
+     * @return bool $value
+     */
     public function getShowListOnError()
     {
         return $this->showListOnError;
@@ -65,9 +114,10 @@ class DomainSpecificEmailField extends EmailField
 
     public function validate($validator)
     {
+        // Run the parent validation
         $valid = parent::validate($validator);
 
-        // If the parent says the value is not valid, let's not bother with validating hte domain.
+        // If the parent says the value is not valid, let's do any domain validation.
         if ($valid) {
             $valid = $this->validateDomain($validator);
         }
@@ -75,6 +125,11 @@ class DomainSpecificEmailField extends EmailField
         return $valid;
     }
 
+    /**
+     * Validate the value of this EmailField agianst our list of allowed and disallowed domains
+     * @param  Validator $validator
+     * @return bool
+     */
     protected function validateDomain(Validator $validator)
     {
         // If we can't get a domain from the current value, just quite validating the domain.
@@ -133,6 +188,10 @@ class DomainSpecificEmailField extends EmailField
         return true;
     }
 
+    /**
+     * Extract the domain part of the field's current value.
+     * @return bool|string false if a domain can not be retrieve or the domain as a string.
+     */
     public function getDomain()
     {
         $value = trim($this->Value());
@@ -144,9 +203,17 @@ class DomainSpecificEmailField extends EmailField
         }
     }
 
+    /**
+     * Split a string by line and remove the empty lines.
+     * @param  string $text
+     * @return [string]
+     */
     protected function getLines($text)
     {
+        // boom
         $lines = explode("\n", $text);
+
+        // Loop over all the lines, trim them and remove the empty ones.
         foreach ($lines as $key => &$line) {
             $line = trim($line);
             if (!$line) {
@@ -156,14 +223,20 @@ class DomainSpecificEmailField extends EmailField
         return $lines;
     }
 
+    /**
+     * Check if the given domain mataches any of the provided lines. Entries in line may contain wildcards.
+     * @param  string $domain
+     * @param  [string] $lines
+     * @return bool
+     */
     protected function valueInList($domain, $lines)
     {
         foreach ($lines as $line) {
-            if (fnmatch($line, $domain, FNM_NOESCAPE | FNM_PERIOD | FNM_CASEFOLD)) {
+            // Ignore case, don't escap special characters
+            if (fnmatch($line, $domain, FNM_NOESCAPE | FNM_PERIOD)) {
                 return true;
             }
         }
         return false;
     }
-
 }
