@@ -11,6 +11,6 @@
 		}
 	],
 	"require": {
-		"silverstripe-australia/memberprofiles": "^1.1",
+		"silverstripe-australia/memberprofiles": "^1.1"
 	}
 }
