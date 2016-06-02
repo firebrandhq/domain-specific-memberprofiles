@@ -1,0 +1,16 @@
+{
+	"name": "firebrandhq/domain-specific-memberprofiles",
+	"description": "Extends the Member Profile page to limit who can register based on their email address",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "member", "profile", "registration"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Maxime Rainville",
+			"email": "MIT"
+		}
+	],
+	"require": {
+		"silverstripe-australia/memberprofiles": "^1.1",
+	}
+}

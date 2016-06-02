@@ -1,0 +1,6 @@
+MemberProfileField:
+  extensions:
+    - DomainSpecificMemberProfileFieldExtension
+MemberProfilePage_Controller:
+  extensions:
+    - DomainSpecificMemberProfilePageExtension
