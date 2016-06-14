@@ -16,13 +16,13 @@ class DomainSpecificEmailField extends EmailField
      * List of allowed domains. Wild cards are accepted.
      * @var [string]
      */
-    protected $allowedDomains = [];
+    protected $allowedDomains = array();
 
     /**
      * List of disallowed domains. Wild cards are accepted.
      * @var [string]
      */
-    protected $disallowed = [];
+    protected $disallowed = array();
 
     /**
      * Whatever to include the list of allowed or disallowed domains in the validation error message.
