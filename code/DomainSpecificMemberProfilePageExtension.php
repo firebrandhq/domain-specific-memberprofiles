@@ -20,7 +20,7 @@ class DomainSpecificMemberProfilePageExtension extends Extension
         $owner = $this->getOwner();
 
         // Get the Email Profile Field
-        $profileField = $owner->Fields()->where(['MemberField' => 'Email'])->First();
+        $profileField = $owner->Fields()->filter(array('MemberField' => 'Email'))->first();
         if (
             !$profileField || !$profileField->ID ||
             ($profileField->AllowedDomains && $profileField->DisallowedDomains)) {
